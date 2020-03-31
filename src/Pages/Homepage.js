@@ -8,7 +8,7 @@ export default function Homepage(props) {
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <input
-                    
+
                         type="email"
                         className="form-control"
                         id="exampleInputEmail1"
@@ -26,8 +26,8 @@ export default function Homepage(props) {
                         id="exampleInputPassword1"
                     />
                 </div>
-                
-                <button type="submit" className="btn btn-primary">
+
+                <button onClick={(e) => {e.preventDefault(); props.checkAuth()}}  className="btn btn-primary">
                     Login
   </button>
             </form>

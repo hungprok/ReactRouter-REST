@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-
+import { useParams, useHistory } from "react-router-dom";
 import { InputGroup, Row, Col, Form, Button, Container } from "react-bootstrap";
 
 export default function CandidateForm(props) {
 
     console.log(props.candidate);
     console.log(props.candidate.match.params.id);
+    let history = useHistory();
+
+    let { id } = useParams(); // this is an alternative for props.candidate.match.id
 
     const [validated, setValidated] = useState(false);
     const [candidate, setCandidate] = useState({
@@ -21,8 +24,11 @@ export default function CandidateForm(props) {
 
     const getCandidate = async () => {
         try {
+            // const response = await fetch(
+            //     `http://localhost:3000/candidates/${props.candidate.match.params.id}`
+            // );
             const response = await fetch(
-                `http://localhost:3000/candidates/${props.candidate.match.params.id}`
+                `http://localhost:3000/candidates/` + id
             );
             const data = await response.json();
             setCandidate(data);
@@ -51,7 +57,7 @@ export default function CandidateForm(props) {
             console.log(candidate);
         } else {
             getCandidate();
-        } 
+        }
     }, []);
 
     const updateCandidate = async () => {
@@ -67,6 +73,7 @@ export default function CandidateForm(props) {
                 `http://localhost:3000/candidates/${props.candidate.match.params.id}`,
                 config
             );
+            history.push("/candidates");
         } catch (error) {
             console.log("Oops");
         }

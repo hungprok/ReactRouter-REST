@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  Link
 } from "react-router-dom";
 import Homepage from './Pages/Homepage'
 import Candidatespage from './Pages/Candidatespage';
@@ -12,7 +13,14 @@ import Editpage from './Pages/Editpage';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const [user, setUser] = useState({ isAuthenticated: true });
+  const [user, setUser] = useState({ isAuthenticated: false });
+  console.log(user);
+
+  let checkAuth = () => {
+    console.log("trigger checkAuth");
+    setUser({ isAuthenticated: true });
+    console.log(user);
+  };
 
   const ProtectedRoute = ({ component: Component, user, ...rest }) => {
     return (
@@ -42,18 +50,19 @@ function App() {
       </div>
     );
   };
+
   return (
 
-    
-    <Switch>
-      <Router>
+    <Router>
+      <Link to='/candidates'>Candidates</Link>
 
+      <Switch>
 
-        <Route path="/candidates" exact component={Candidatespage} />
+        {/* <Route path="/candidates" exact component={Candidatespage} /> */}
 
         <Route path="/candidates/:id" component={Editpage} />
 
-        <Route path="/" exact component={Homepage} />
+        <Route path="/" exact render={(props) => (<Homepage checkAuth={checkAuth} {...props} />)} />
 
         <ProtectedRoute
           exact
@@ -61,16 +70,17 @@ function App() {
           path="/candidates"
           component={Candidatespage}
         />
-        <ProtectedRoute
+        {/* <ProtectedRoute
           user={user}
           path="/candidates/:id"
           component={Editpage}
-        />
+        /> */}
 
-        <Route path="*" component={FourOhFourPage} />
+        <Route path="*" exact component={FourOhFourPage} />
 
-      </Router>
-    </Switch>
+
+      </Switch>
+    </Router>
   )
 }
 export default App;
