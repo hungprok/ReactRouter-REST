@@ -3,12 +3,42 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+
+const initialState = {
+  userName: '',
+  isAuthenticated: false
+};
+
+function countReducer(state = initialState, action) {
+  switch (action.type) {
+    case "LOGIN":
+      return {
+        userName: action.payload,
+        isAuthenticated: true
+      };
+    case "LOGOUT":
+      return {
+        userName: '',
+        isAuthenticated: false
+      };
+    default:
+      return state;
+  }
+}
+
+const store = createStore(
+  countReducer
+);
 
 ReactDOM.render(
+  <Provider store={store}>
     <BrowserRouter>
-    <App />
-    </BrowserRouter>,
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

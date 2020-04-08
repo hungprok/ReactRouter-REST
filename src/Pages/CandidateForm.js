@@ -7,11 +7,12 @@ export default function CandidateForm(props) {
     console.log(props.candidate);
     console.log(props.candidate.match.params.id);
     let history = useHistory();
+    // history.push('/candidates')
 
     let { id } = useParams(); // this is an alternative for props.candidate.match.id
 
     const [validated, setValidated] = useState(false);
-    const [candidate, setCandidate] = useState({
+    let [candidate, setCandidate] = useState({
         city: "",
         email: "",
         company: "",
@@ -28,11 +29,20 @@ export default function CandidateForm(props) {
             //     `http://localhost:3000/candidates/${props.candidate.match.params.id}`
             // );
             const response = await fetch(
-                `http://localhost:3000/candidates/` + id
+                // `https://api.jsonbin.io/b/5e8cd9e3e583106bbe33f1c5/` + id
+
+                // I am using Json bin so i cannot use id to trigger URL, therefore, I fetch the whole database instead
+
+                `http://localhost:3001/candidates/${id}`
             );
             const data = await response.json();
-            setCandidate(data);
+            console.log(id);
             console.log(data);
+            // let abc = data.filter(item => item.id == id)
+            // console.log(abc);
+            // setCandidate(abc[0]);
+            setCandidate(data);
+            console.log(candidate);
         } catch {
             console.log("Could not fetch candidate.");
         }
@@ -70,7 +80,10 @@ export default function CandidateForm(props) {
         };
         try {
             const response = await fetch(
-                `http://localhost:3000/candidates/${props.candidate.match.params.id}`,
+
+                // I am using Json bin so i cannot use id to trigger URL, therefore, I fetch the whole database instead
+
+                `http://localhost:3001/candidates/${props.candidate.match.params.id}`,
                 config
             );
             history.push("/candidates");
@@ -240,6 +253,7 @@ export default function CandidateForm(props) {
                             </Form.Group>
                         </Form.Row>
                         <Button type="submit">Save</Button>
+                        <button className='btn btn-primary' onClick={()=>history.goBack()}>Back</button>
                     </Form>
                 </Col>
             </Row>

@@ -15,10 +15,15 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector, useDispatch } from "react-redux";
 
 
 
 export default function Candidatespage(props) {
+    let userName = useSelector(state => state.userName)
+    let isAuthenticated = useSelector(state => state.isAuthenticated)
+    const dispatch = useDispatch();
+
     const [candidates, setCandidates] = useState([]);
     console.log(props);
     const onDeleteCandidate = id => {
@@ -33,10 +38,13 @@ export default function Candidatespage(props) {
     };
     useEffect(() => {
         const getCandidates = async () => {
-            const response = await fetch("http://localhost:3000/candidates");
+            const response = await fetch("http://localhost:3001/candidates");
             const data = await response.json();
             console.log(data);
+            // let ABC = data.candidates[0]
+            // console.log(ABC);
             setCandidates(data);
+            console.log(candidates);
         };
         getCandidates();
     }, []);
@@ -44,6 +52,9 @@ export default function Candidatespage(props) {
 
     return (
         <Container fluid>
+            <button onClick={() => dispatch({ type: "LOGOUT" })} className="btn btn-primary">
+                Logout
+</button>
             <Row>
                 {candidates.map(candidate => {
                     return (
